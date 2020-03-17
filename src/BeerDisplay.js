@@ -61,7 +61,7 @@ class BeerDisplay extends React.Component {
     }
 
     if(abv){
-      url = url + 'abv_gt=' + abv
+      url = url + 'abv_gt=' + abv;
       first = false;
     }
 
@@ -69,7 +69,7 @@ class BeerDisplay extends React.Component {
       if(!first){
         url = url + '&';
       }
-      url = url + 'ibu_gt=' + abv;
+      url = url + 'ibu_gt=' + ibu;
       first = false;
     }
     if(food){
