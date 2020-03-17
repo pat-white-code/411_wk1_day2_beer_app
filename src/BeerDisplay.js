@@ -95,7 +95,7 @@ class BeerDisplay extends React.Component {
     const {isLoading, data} = this.state
     return(
       <div className='beer-display'>
-        <h1>Beers Go Here</h1>
+        <h1>Enter your beer preferences:</h1>
         <form>
           <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
           <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} />
