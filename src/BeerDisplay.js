@@ -35,6 +35,7 @@ class BeerDisplay extends React.Component {
     })
   }
   handleFood = e => {
+    console.log(e.target.value);
     this.setState({
       food: e.target.value
     })
@@ -45,14 +46,43 @@ class BeerDisplay extends React.Component {
   }
 
   async fetchData() {
+    let abv = this.state.abvGT;
+    let ibu = this.state.ibuGT;
+    let food = this.state.food;
+    let first = true;
+
     this.setState({
       isLoading: true
     })
-    let URL = 'https://api.punkapi.com/v2/beers/'
-    if(this.state.abvGT){
-      URL = URL + '?abv_gt=' + this.state.abvGT
-    } 
-    let response = await fetch(URL)
+    let url = 'https://api.punkapi.com/v2/beers/'
+
+    if(abv || ibu || food) {
+      url = url + '?'
+    }
+
+    if(abv){
+      url = url + 'abv_gt=' + abv
+      first = false;
+    }
+
+    if(ibu) {
+      if(!first){
+        url = url + '&';
+      }
+      url = url + 'ibu_gt=' + abv;
+      first = false;
+    }
+    if(food){
+      if(!first) {
+        url = url + '&'
+      }
+      url = url + 'food=' + food;
+      first = false;
+    }
+
+    console.log(url);
+
+    let response = await fetch(url)
     let results = await response.json();
     this.setState({
       data: results,
@@ -68,27 +98,38 @@ class BeerDisplay extends React.Component {
         <h1>Beers Go Here</h1>
         <form>
           <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
-          <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu}/>
-          <select onChange={this.handleFood}>
+          <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} />
+          <select onChange={this.handleFood} onBlur={this.fetchData}>
             <option value="chicken">Chicken</option>
-            <option value="chicken">Crab</option>
-            <option value="chicken">Beef</option>
-            <option value="chicken">Spicy</option>
-            <option value="chicken">Sweet</option>
-            <option value="chicken">Oysters</option>
+            <option value="crab">Crab</option>
+            <option value="beef">Beef</option>
+            <option value="spicy">Spicy</option>
+            <option value="sweet">Sweet</option>
+            <option value="oyster">Oysters</option>
           </select>
         </form>
         <div className = {(isLoading ? 'isloading' : '')}>
-          {(!isLoading ? data.map(beer => {
+          {(!isLoading && data.length > 0 ? data.map((beer, index) => {
             return <BeerCard 
+              key={index}
               abv={beer.abv} 
               description={beer.description}
               image_url={beer.image_url}
               name={beer.name}  
               food_pairing={beer.food_pairing}
+              ibu={beer.ibu}
               />}
               ) : '')}
-          <div></div>
+        </div>
+        <div>
+          {!isLoading && data.error ? (
+            <p>Bad request or server error. Check the fields and try again</p>
+          ) : ''}
+        {!isLoading && data.length === 0 ?  (
+                <div>
+                  <p>There are no beers that match those parameters</p>
+                </div>
+              ) : ''}
         </div>
       </div>
     )

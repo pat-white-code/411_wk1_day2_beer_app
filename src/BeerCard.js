@@ -15,7 +15,7 @@ export default class BeerCard extends React.Component {
   }
 
   render(){
-    const {abv, description, image_url, name, food_pairing} = this.props;
+    const {abv, description, image_url, name, food_pairing, ibu} = this.props;
     return(
       <div className='beer-card'>
         <div className="img-container">
@@ -24,7 +24,10 @@ export default class BeerCard extends React.Component {
         <div className='info-container'>
           <div className='beer-title'>
             <h1>{name}</h1>
-            <h2>ABV: {abv}</h2>
+            <div className='beer-stats'>
+              <h2 className='stat'>ABV: {abv}</h2>
+              <h3 className='stat'>IBU: {ibu}</h3>
+            </div>
           </div>
           <div className='description'>
             <p>{description}</p>
