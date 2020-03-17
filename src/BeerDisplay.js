@@ -2,6 +2,7 @@ import React from 'react';
 import './isloading.css';
 import './beer-display.css';
 import BeerCard from './BeerCard';
+import './form.css';
 
 class BeerDisplay extends React.Component {
   constructor(props){
@@ -97,16 +98,26 @@ class BeerDisplay extends React.Component {
       <div className='beer-display'>
         <h1>Enter your beer preferences:</h1>
         <form>
-          <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
-          <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} />
-          <select onChange={this.handleFood} onBlur={this.fetchData}>
-            <option value="chicken">Chicken</option>
-            <option value="crab">Crab</option>
-            <option value="beef">Beef</option>
-            <option value="spicy">Spicy</option>
-            <option value="sweet">Sweet</option>
-            <option value="oyster">Oysters</option>
-          </select>
+            <div className="form-group">
+              <label for="abv_gt">Minimum ABV</label>
+              <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
+            </div>
+
+          <div className='form-group'>
+            <label for='ibu_gt'>Minimum Ibu</label>
+            <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} /></div>
+          <div className='form-group'>
+            <label for='food'>Food Pairings</label>
+            <input placeholder='e.g "beef" "oyster" "spicy"' type="text"id="food" onChange={this.handleFood} onBlur={this.fetchData} />
+            {/* <select onChange={this.handleFood} onBlur={this.fetchData}>
+              <option value="chicken">Chicken</option>
+              <option value="crab">Crab</option>
+              <option value="beef">Beef</option>
+              <option value="spicy">Spicy</option>
+              <option value="sweet">Sweet</option>
+              <option value="oyster">Oysters</option>
+            </select> */}
+          </div>
         </form>
         <div className = {(isLoading ? 'isloading' : '')}>
           {(!isLoading && data.length > 0 ? data.map((beer, index) => {
