@@ -3,6 +3,7 @@ import './isloading.css';
 import './beer-display.css';
 import BeerCard from './BeerCard';
 import './form.css';
+import './animate.css';
 
 class BeerDisplay extends React.Component {
   constructor(props){
@@ -99,15 +100,15 @@ class BeerDisplay extends React.Component {
         <h1>Enter your beer preferences:</h1>
         <form>
             <div className="form-group">
-              <label for="abv_gt">Minimum ABV</label>
+              <label htmlFor="abv_gt">Minimum ABV</label>
               <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
             </div>
 
           <div className='form-group'>
-            <label for='ibu_gt'>Minimum Ibu</label>
+            <label htmlFor='ibu_gt'>Minimum Ibu</label>
             <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} /></div>
           <div className='form-group'>
-            <label for='food'>Food Pairings</label>
+            <label htmlFor='food'>Food Pairings</label>
             <input placeholder='e.g "beef" "oyster" "spicy"' type="text"id="food" onChange={this.handleFood} onBlur={this.fetchData} />
             {/* <select onChange={this.handleFood} onBlur={this.fetchData}>
               <option value="chicken">Chicken</option>
@@ -122,6 +123,7 @@ class BeerDisplay extends React.Component {
         <div className = {(isLoading ? 'isloading' : '')}>
           {(!isLoading && data.length > 0 ? data.map((beer, index) => {
             return <BeerCard 
+              animateDelay={index*1000}
               key={index}
               abv={beer.abv} 
               description={beer.description}

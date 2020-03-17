@@ -15,9 +15,9 @@ export default class BeerCard extends React.Component {
   }
 
   render(){
-    const {abv, description, image_url, name, food_pairing, ibu} = this.props;
+    const {abv, description, image_url, name, food_pairing, ibu, animationDelay} = this.props;
     return(
-      <div className='beer-card'>
+      <div className={`beer-card animated slideInUp delay-${animationDelay}ms`}>
         <div className="img-container">
           <img alt={`${name} beer`} src={image_url} className="beer-img" />
         </div>

@@ -2,8 +2,9 @@
   height:300px;
   width:750px;
   display: flex;
-  border: red 1px solid;
   margin: 20px 0;
+  box-shadow: 2px 2px 10px black;
+  background-color: #333;
 }
 
 .beers {
@@ -12,7 +13,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border:1px red solid;
 }
 
 .img-container{
@@ -26,7 +26,6 @@
 
 .info-container {
   width: 75%;
-  border: 1px blue solid;
   padding:  31px, 0;
 }
 
@@ -45,7 +44,6 @@
 .like-beer {
   width: 100px;
   height: 100%;
-  border: 1px orange solid;
   transition: 200ms;
   background-color: rgba(255, 255, 255, .1)
 }
