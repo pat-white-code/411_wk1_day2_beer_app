@@ -1,11 +1,13 @@
 .liked-beers{
-  background-color: rgba(255, 235, 205, .5);
+  background-color: rgba(65, 125, 105, 1);
   position: fixed;
-  height: 200px;
-  width: 200px;
-  top: 0;
-  right: 0;
+  height: 160px;
+  width: 240px;
+  top: 10px;
+  right: 0px;
   z-index: 1;
+  box-shadow: 0px 2px 15px #222;
+  border-radius: 10px;
 }
 
 .beer-list {

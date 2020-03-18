@@ -12,14 +12,31 @@ class BeerDisplay extends React.Component {
       this.state = {
         data: [],
         isLoading: true,
-        abvGT: '',
-        ibuGT: '',
-        food: '',
-        likedBeers: []
+        abvGT: undefined,
+        ibuGT: undefined,
+        food: undefined,
+        ibuLT: undefined,
+        ebcGT: undefined,
+        hops: undefined,
+        likedBeers: [],
+        addParams: [{param:'ibu_lt', description:'Maximum IBU', action:this.handleParam}, {param:'ebc_gt', description:'Minimum EBC', action:this.handleParam}, {param:'hops', description:'Hops', action:this.handleParam}],
+        addedParams: []
     }
     this.fetchData = this.fetchData.bind(this)
   }
-
+  // <label htmlFor="abv_gt">Minimum ABV</label>
+  // <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
+  addParam = e => {
+    console.log(e);
+    let param = e.target.value;
+    console.log('Param', param);
+    let index = this.state.addParams.findIndex(addParam => addParam === param);
+    let added = this.state.addParams.splice(index, 1);
+    this.setState({
+      addParams: this.state.addParams,
+      addedParams: [...this.state.addedParams, ...added]
+    })
+  }
   addLikedBeer = id => {
     let newBeer = this.state.data.find(beer => beer.id === parseInt(id));
     console.log('ID',id)
@@ -44,21 +61,10 @@ class BeerDisplay extends React.Component {
     return (this.state.likedBeers.findIndex(element => element.id === parseInt(id)) !== -1);
   }
 
-  handleAbv = e => {
-    this.setState({
-      abvGT: e.target.value
-    })
-  }
-  handleIbu = e => {
-    this.setState({
-      ibuGT: e.target.value
-    })
-  }
-  handleFood = e => {
-    console.log(e.target.value);
-    this.setState({
-      food: e.target.value
-    })
+  handleParam = e => {
+    console.log(e.target.value)
+    let stateChange = e.target.id;
+    this.setState({[stateChange]: e.target.value})
   }
 
   componentDidMount(){
@@ -66,39 +72,25 @@ class BeerDisplay extends React.Component {
   }
 
   async fetchData() {
-    let abv = this.state.abvGT;
-    let ibu = this.state.ibuGT;
-    let food = this.state.food;
+    // const {abvGT, ibuGT, food, ibuLT, ebcGT, hops} = this.state;
+    let paramString = ['abv_gt', 'ibu_gt', 'food', 'ibu_lt', 'ebc_gt', 'hops'];
     let first = true;
 
     this.setState({
       isLoading: true
     })
+
     let url = 'https://api.punkapi.com/v2/beers/'
 
-    if(abv || ibu || food) {
-      url = url + '?'
-    }
+    if(paramString.some(param => this.state[param] !== undefined)){url = url + '?'}
 
-    if(abv){
-      url = url + 'abv_gt=' + abv;
-      first = false;
-    }
-
-    if(ibu) {
-      if(!first){
-        url = url + '&';
+    paramString.forEach(param=> {
+      if(this.state[param] !== undefined) {
+        if(!first){url=url+'&'}
+        url = url + param + '=' + this.state[param]
+        if(first){first=false};
       }
-      url = url + 'ibu_gt=' + ibu;
-      first = false;
-    }
-    if(food){
-      if(!first) {
-        url = url + '&'
-      }
-      url = url + 'food=' + food;
-      first = false;
-    }
+    })
 
     console.log(url);
 
@@ -128,26 +120,33 @@ class BeerDisplay extends React.Component {
             </div>
           </div>
             ): ''}
+
         <form>
             <div className="form-group">
               <label htmlFor="abv_gt">Minimum ABV</label>
-              <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
+              <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleParam} onBlur={this.fetchData}/>
             </div>
           <div className='form-group'>
             <label htmlFor='ibu_gt'>Minimum Ibu</label>
-            <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} /></div>
+            <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleParam} onBlur={this.fetchData} /></div>
           <div className='form-group'>
             <label htmlFor='food'>Food Pairings</label>
-            <input placeholder='e.g "beef" "oyster" "spicy"' type="text"id="food" onChange={this.handleFood} onBlur={this.fetchData} />
-            {/* <select onChange={this.handleFood} onBlur={this.fetchData}>
-              <option value="chicken">Chicken</option>
-              <option value="crab">Crab</option>
-              <option value="beef">Beef</option>
-              <option value="spicy">Spicy</option>
-              <option value="sweet">Sweet</option>
-              <option value="oyster">Oysters</option>
-            </select> */}
+            <input placeholder='e.g "beef" "oyster" "spicy"' type="text"id="food" 
+            onChange={this.handleParam} onBlur={this.fetchData} />
           </div>
+          {this.state.addedParams.map((param, index)=>( 
+              <div className='form-group' key={index}>
+                <label htmlFor={param.param}>{param.description}</label>
+                <input type="text" id={param.param} placeholder={param.description} key={index} onChange={param.action} onBlur={this.fetchData}></input>
+              </div>
+            ))}
+
+            <select type='select' onChange={this.addParam}>
+              <option>Add Parameter</option>
+              {this.state.addParams.map((param, index) => (
+                <option value={param.param} key={index} > {param.description} </option>
+              ))}
+            </select>
         </form>
         <div className = {(isLoading ? 'isloading' : '')}>
           {(!isLoading && data.length > 0 ? data.map((beer, index) => {

@@ -18,6 +18,11 @@ input[type=text], select {
   border-right-width: 0px;
   border-left-width: 0px;
 }
+
+select {
+  width: auto;
+  border: 1px white solid;
+}
 ::placeholder {
   color: #ccc
 }
