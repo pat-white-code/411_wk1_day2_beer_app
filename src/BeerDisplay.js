@@ -118,12 +118,14 @@ class BeerDisplay extends React.Component {
         <h1>Enter your beer preferences:</h1>
         {this.state.likedBeers.length ? (
           <div className='liked-beers animated slideInRight'>
-            <h1>liked beers:</h1>
-            <ul>
-            {this.state.likedBeers.map(beer =>(
-              <li key={beer.id}>{beer.name}</li>
-            ))}
-            </ul>
+            <h1>liked beers ({this.state.likedBeers.length})</h1>
+            <div className='beer-list'>
+              <ul>
+              {this.state.likedBeers.map(beer =>(
+                <li key={beer.id}>{beer.name}</li>
+              ))}
+              </ul>
+            </div>
           </div>
             ): ''}
         <form>
