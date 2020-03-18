@@ -1,0 +1,9 @@
+.liked-beers{
+  background-color: rgba(255, 235, 205, .5);
+  position: fixed;
+  height: 200px;
+  width: 200px;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}

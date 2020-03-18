@@ -4,6 +4,7 @@ import './beer-display.css';
 import BeerCard from './BeerCard';
 import './form.css';
 import './animate.css';
+import './likedBeers.css';
 
 class BeerDisplay extends React.Component {
   constructor(props){
@@ -13,18 +14,35 @@ class BeerDisplay extends React.Component {
         isLoading: true,
         abvGT: '',
         ibuGT: '',
-        food: ''
+        food: '',
+        likedBeers: []
     }
     this.fetchData = this.fetchData.bind(this)
   }
-  // state = {
-  //   data: [],
-  //   isLoading: true,
-  //   abvGT: '',
-  //   ibuGT: '',
-  //   food: ''
 
-  // }
+  addLikedBeer = id => {
+    let newBeer = this.state.data.find(beer => beer.id === parseInt(id));
+    console.log('ID',id)
+    console.log(newBeer);
+    this.setState({
+      likedBeers: [...this.state.likedBeers, newBeer]
+    })
+  }
+  removeLikedBeer = id => {
+    let removeIndex = this.state.likedBeers.findIndex(beer => beer.id === parseInt(id));
+    console.log('REMOVE INDEX', removeIndex)
+    let spliced = this.state.likedBeers.splice(removeIndex, 1);
+    console.log('ID',id)
+    console.log('SPLICED', spliced);
+    console.log('STATE', this.state.likedBeers);
+    this.setState({
+      likedBeers: this.state.likedBeers
+    })
+  }
+
+  isLiked = id => {
+    return (this.state.likedBeers.findIndex(element => element.id === parseInt(id)) !== -1);
+  }
 
   handleAbv = e => {
     this.setState({
@@ -98,12 +116,21 @@ class BeerDisplay extends React.Component {
     return(
       <div className='beer-display'>
         <h1>Enter your beer preferences:</h1>
+        {this.state.likedBeers.length ? (
+          <div className='liked-beers animated slideInRight'>
+            <h1>liked beers:</h1>
+            <ul>
+            {this.state.likedBeers.map(beer =>(
+              <li key={beer.id}>{beer.name}</li>
+            ))}
+            </ul>
+          </div>
+            ): ''}
         <form>
             <div className="form-group">
               <label htmlFor="abv_gt">Minimum ABV</label>
               <input type="text" id="abv_gt" placeholder="minimum ABV" onChange={this.handleAbv} onBlur={this.fetchData}/>
             </div>
-
           <div className='form-group'>
             <label htmlFor='ibu_gt'>Minimum Ibu</label>
             <input type="text" id="ibu_gt" placeholder="minimum IBU" onChange={this.handleIbu} onBlur={this.fetchData} /></div>
@@ -123,6 +150,7 @@ class BeerDisplay extends React.Component {
         <div className = {(isLoading ? 'isloading' : '')}>
           {(!isLoading && data.length > 0 ? data.map((beer, index) => {
             return <BeerCard 
+              id={beer.id}
               animateDelay={index*300}
               key={index}
               abv={beer.abv} 
@@ -131,6 +159,9 @@ class BeerDisplay extends React.Component {
               name={beer.name}  
               food_pairing={beer.food_pairing}
               ibu={beer.ibu}
+              addLikedBeer={this.addLikedBeer}
+              removeLikedBeer={this.removeLikedBeer}
+              isLiked = {this.isLiked}
               />}
               ) : '')}
         </div>

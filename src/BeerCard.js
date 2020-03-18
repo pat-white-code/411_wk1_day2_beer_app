@@ -8,14 +8,26 @@ export default class BeerCard extends React.Component {
       liked: false
     }
   }
-  handleLike = () => {
+
+  componentDidMount(){
+    const {isLiked, id} = this.props;
+    if(isLiked(id)) {
+      this.setState({liked: true})
+    } 
+  }
+
+  handleLike = (e) => {
+    const {addLikedBeer, removeLikedBeer} = this.props;
+    let id = e.target.dataset.id
+    !this.state.liked ? addLikedBeer(id) : removeLikedBeer(id);
     this.setState({
       liked: (!this.state.liked)
     })
+    // addLikedBeer(e.target.data.set.id)
   }
 
   render(){
-    const {abv, description, image_url, name, food_pairing, ibu, animateDelay} = this.props;
+    const {abv, description, image_url, name, food_pairing, ibu, animateDelay, id} = this.props;
     return(
       <div className={`beer-card animated slideInRight delay-${animateDelay}ms`}>
         <div className="img-container">
@@ -36,7 +48,7 @@ export default class BeerCard extends React.Component {
           </ul>
           </div>
         </div>
-        <div className={`like-beer ${this.state.liked ? 'liked' : ''}`} onClick={this.handleLike}></div>
+        <div className={`like-beer ${this.state.liked ? 'liked' : ''}`} data-id={id} onClick={this.handleLike}></div>
       </div>
     )
   }
