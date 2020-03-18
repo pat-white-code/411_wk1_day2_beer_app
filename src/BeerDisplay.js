@@ -12,14 +12,14 @@ class BeerDisplay extends React.Component {
       this.state = {
         data: [],
         isLoading: true,
-        abvGT: undefined,
-        ibuGT: undefined,
+        abv_gt: undefined,
+        ibu_gt: undefined,
         food: undefined,
-        ibuLT: undefined,
-        ebcGT: undefined,
+        ibu_lt: undefined,
+        ebc_gt: undefined,
         hops: undefined,
         likedBeers: [],
-        addParams: [{param:'ibu_lt', description:'Maximum IBU', action:this.handleParam}, {param:'ebc_gt', description:'Minimum EBC', action:this.handleParam}, {param:'hops', description:'Hops', action:this.handleParam}],
+        addParams: [{param:'ibu_lt', description:'Maximum IBU', action:this.handleParam}, {param:'ebc_gt', description:'Minimum EBC', action:this.handleParam}, {param:'hops', description:'Hops', action:this.handleParam}], 
         addedParams: []
     }
     this.fetchData = this.fetchData.bind(this)
@@ -30,7 +30,8 @@ class BeerDisplay extends React.Component {
     console.log(e);
     let param = e.target.value;
     console.log('Param', param);
-    let index = this.state.addParams.findIndex(addParam => addParam === param);
+    let index = this.state.addParams.findIndex(addParam => addParam.param === param);
+    console.log('INDEXXX', index);
     let added = this.state.addParams.splice(index, 1);
     this.setState({
       addParams: this.state.addParams,
