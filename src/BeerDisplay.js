@@ -123,7 +123,7 @@ class BeerDisplay extends React.Component {
         <div className = {(isLoading ? 'isloading' : '')}>
           {(!isLoading && data.length > 0 ? data.map((beer, index) => {
             return <BeerCard 
-              animateDelay={index*1000}
+              animateDelay={index*300}
               key={index}
               abv={beer.abv} 
               description={beer.description}

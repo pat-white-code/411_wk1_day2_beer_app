@@ -67,3 +67,35 @@
 .stat {
   margin: 0 20px;
 }
+
+.delay-300ms{
+  animation-delay: 100ms;
+}
+.delay-600ms{
+  animation-delay: 600ms;
+}
+.delay-900ms{
+  animation-delay: 900ms;
+}
+.delay-1200ms{
+  animation-delay: 1200ms;
+}
+.delay-1500ms{
+  animation-delay: 1500ms;
+}
+.delay-1800ms{
+  animation-delay: 1800ms;
+}
+.delay-2100ms{
+  animation-delay: 2100ms;
+}
+.delay-2400ms{
+  animation-delay: 2400ms;
+}
+.delay-2700ms{
+  animation-delay: 2700ms;
+}
+.delay-3000ms{
+  animation-delay: 3000ms;
+}
+
